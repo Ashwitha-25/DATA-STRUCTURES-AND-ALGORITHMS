@@ -1,0 +1,60 @@
+#include<stdio.h>
+#include<stdlib.h>
+struct Node {
+    int data;
+    struct Node *left;
+    struct Node *right;
+};
+struct Node* createNode(int value){
+   struct Node*newNode=malloc(sizeof(struct Node));
+   newNode->data=value;
+   newNode->left=NULL;
+   newNode->right=NULL;
+   return newNode;
+}
+struct Node *insert(struct Node* root,int value){
+    if(root==NULL){
+        return createNode(value);
+    }
+    if(value<root->data)
+       root->left=insert(root->left,value);
+    else if(value>root->data)
+       root->right=insert(root->right,value);
+    return root;
+}
+struct Node* createTree(){
+    int value;
+    printf("Enter node value (-1 for no node): ");
+    scanf("%d",&value);
+    if(value==-1)
+      return NULL;
+    struct Node* root=createNode(value);
+    printf("Enter left child of %d\n",value);
+    root->left=createTree();
+    printf("Enter right child of %d\n",value);
+    root->right=createTree();
+    return root;
+}
+void inorder(struct Node* root){
+    if(root!=NULL)
+    {
+        inorder(root->left);
+        inorder(root->right);
+        printf("%d ",root->data);
+    }
+}
+int main(){
+    struct Node *root =NULL;
+    int n,value;
+    printf("Enter no. of nodes to insert:\n");
+    scanf("%d",&n);
+    
+    printf("Enter %d values:\n",n);
+    for(int i=0;i<n;i++){
+       scanf("%d",&value);
+       root=insert(root,value);
+    }
+    printf("postorder traversal of BST: ");
+    inorder(root);
+    return 0;
+}
